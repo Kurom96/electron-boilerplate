@@ -1,8 +1,9 @@
 name: release
 
 on:
-  release:
-    types: [created, updated, prereleased]
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
 
@@ -35,5 +36,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "dist/**"
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
