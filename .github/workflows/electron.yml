@@ -6,7 +6,11 @@ jobs:
 
   test:
 
-    runs-on: macOS-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macOS-latest, windows-latest]
 
     steps:
       - name: Context
@@ -15,19 +19,24 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
       - name: install
-        run: |
-          yarn install
-          echo "テストうまく動かないので一旦スルー"
-#      - name: unit
-#        run: yarn unit
-#      - name: e2e
-#        run: yarn e2e
+        run: yarn install
+      - name: unit
+        run: yarn unit
+        CI: true
+      - name: e2e
+        run: yarn e2e
+        CI: true
       - name: Build
         run: yarn package
-      - name: Publish
-        run: echo "ここでパブリッシュ!!"
+      - name: Upload
+        run: npx rimraf 'dist/!(*.exe|*.deb|*.AppImage|*.dmg)'
+        uses: actions/upload-artifact@master
+        with:
+          name: artifact ${{ matrix.os }}
+          path: dist
+
