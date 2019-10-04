@@ -25,12 +25,10 @@ jobs:
           node-version: 12.x
       - name: install
         run: yarn install
-      - name: unit
-        run: yarn unit
-        CI: true
-      - name: e2e
-        run: yarn e2e
-        CI: true
+#      - name: unit
+#        run: yarn unit
+#      - name: e2e
+#        run: yarn e2e
       - name: Build
         run: yarn package
       - name: Upload
