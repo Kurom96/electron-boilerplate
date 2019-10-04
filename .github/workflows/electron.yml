@@ -1,4 +1,4 @@
-name: Electron CI/CD
+name: Electron test/build
 
 on: [push]
 
@@ -23,7 +23,7 @@ jobs:
 
   build:
 
-    needs: test
+    needs: CI
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -31,10 +31,6 @@ jobs:
         os: [macOS-latest, windows-latest]
 
     steps:
-      - name: Context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: checkout
         uses: actions/checkout@v1
       - name: use Node.js 12.x
@@ -43,14 +39,6 @@ jobs:
           node-version: 12.x
       - name: install
         run: yarn install
-#      - name: unit test
-#        run: yarn unit
-#        env:
-#          CI: true
-#      - name: e2e
-#        run: yarn e2e
-#        env:
-#          CI: true
       - name: package
         run: yarn package
       - name: clean
