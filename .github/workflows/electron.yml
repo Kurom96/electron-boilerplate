@@ -22,9 +22,7 @@ jobs:
           CI: true
 
   build:
-
     needs: test
-
     runs-on: ${{ matrix.os }}
 
     strategy:
