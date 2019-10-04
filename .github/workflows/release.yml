@@ -1,4 +1,4 @@
-name: Electron test/build
+name: release
 
 on:
   release:
