@@ -23,7 +23,8 @@ jobs:
 
   build:
 
-    needs: CI
+    needs: test
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -48,4 +49,3 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: dist
-
