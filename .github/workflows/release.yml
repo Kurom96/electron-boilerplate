@@ -25,17 +25,25 @@ jobs:
         run: yarn install
       - name: package
         run: yarn package
-      - name: clean
-        run: npx rimraf "dist/!(*.exe|*.deb|*.AppImage|*.dmg)"
+      - name: artifacts（mac)
+        if: matrix.os == 'macOS-latest'
+        run: |
+          mkdir artifacts
+          cp dist/*.dmg artifacts
+      - name: artifacts（win)
+        if: matrix.os == 'windows-latest'
+        run: |
+          mkdir artifacts
+          cp dist/*.exe artifacts
       - name: upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
           name: ${{ matrix.os }}
-          path: dist
+          path: artifacts
       - name: release
         uses: softprops/action-gh-release@v1
         with:
-          files: "dist/**"
+          files: "artifacts/**"
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
